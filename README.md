@@ -10,4 +10,6 @@ Then run:
 json-server --watch db/index.js --delay 10 --middlewares db/jitter.js
 ```
 
+or run `npm run mock`
+
 This will give mocked ajax requests at least a delay of 10ms plus variable amount of delay between 0 ~ 2000ms.
