@@ -1,4 +1,4 @@
-# mock data
+# mock data via json-server with random jitter
 
 using [json-server](https://www.npmjs.com/package/json-server) with *Generate random data* capability. See `db.js` file.
 

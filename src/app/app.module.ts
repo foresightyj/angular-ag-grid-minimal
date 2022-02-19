@@ -3,10 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HelloInfiniteRowComponent } from './hello-infinite-row/hello-infinite-row.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HelloInfiniteRowComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
