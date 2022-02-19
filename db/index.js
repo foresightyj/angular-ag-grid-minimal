@@ -5,12 +5,13 @@ const names = require("./names");
  * @typedef {import("../types").IUser} IUser
  */
 
+const NO_OF_USERS = 127;
 
 module.exports = () => {
   /** @type {IUser[]} */
   const users = [];
   const data = { users };
-  for (let i = 1; i <= 1247; i++) {
+  for (let i = 0; i <= NO_OF_USERS; i++) {
     const s = Math.sqrt(i * 13).toString();
     const randomUserName = names[parseInt(s[s.length - 1], 10) % names.length];
     data.users.push({

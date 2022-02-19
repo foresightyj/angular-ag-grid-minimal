@@ -41,43 +41,36 @@ export class HelloInfiniteRowComponent implements OnInit {
   public rowBuffer = 0;
   public rowSelection = 'multiple';
   public rowModelType = 'infinite';
-  public cacheBlockSize = 100;
+  //see https://www.ag-grid.com/angular-data-grid/infinite-scrolling/#block-size
+  public cacheBlockSize = 20;
   public cacheOverflowSize = 2;
   public maxConcurrentDatasourceRequests = 1;
   public infiniteInitialRowCount = 1000;
+  //see https://www.ag-grid.com/angular-data-grid/infinite-scrolling/#block-cache
   public maxBlocksInCache = 10;
-  public rowData!: any[];
 
   constructor(private http: HttpClient) { }
   ngOnInit(): void {
   }
 
   onGridReady(params: GridReadyEvent) {
-    this.http
-      .get<any[]>('http://localhost:3000/users')
-      .subscribe((data) => {
-        const dataSource: IDatasource = {
-          rowCount: undefined,
-          getRows: function (params: IGetRowsParams) {
-            console.log(
-              'asking for ' + params.startRow + ' to ' + params.endRow
-            );
-            // At this point in your code, you would call the server.
-            // To make the demo look real, wait for 500ms before returning
-            setTimeout(function () {
-              // take a slice of the total rows
-              const rowsThisPage = data.slice(params.startRow, params.endRow);
-              // if on or after the last page, work out the last row.
-              let lastRow = -1;
-              if (data.length <= params.endRow) {
-                lastRow = data.length;
-              }
-              // call the success callback
-              params.successCallback(rowsThisPage, lastRow);
-            }, 500);
-          },
-        };
-        params.api!.setDatasource(dataSource);
-      });
+
+    const dataSource: IDatasource = {
+      rowCount: undefined,
+      getRows: (params: IGetRowsParams) => {
+        const { startRow, endRow } = params;
+        console.log('asking for ' + startRow + ' to ' + endRow);
+        //to construct a meaningful lawRow parameter for params.successCallback
+        //we are going to request 1 more than needed to see if reached the last page.
+        const url = `http://localhost:3000/users?_start=${startRow}&_end=${endRow + 1}`;
+        this.http.get<IUser[]>(url).subscribe((data) => {
+          //see https://www.ag-grid.com/angular-data-grid/infinite-scrolling/#setting-last-row-index
+          const lastRow = (endRow+1-startRow === data.length)? undefined: startRow + data.length;
+          data.pop();
+          params.successCallback(data, lastRow);
+        });
+      },
+    };
+    params.api!.setDatasource(dataSource);
   }
 }
