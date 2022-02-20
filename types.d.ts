@@ -4,5 +4,6 @@ export interface IUser {
     id: number,
     name: string,
     gender: Gender,
+    lastLoggedIn:Date,
 }
 

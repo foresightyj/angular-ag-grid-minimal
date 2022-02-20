@@ -9,7 +9,11 @@ import {
 } from 'ag-grid-community';
 
 import { nameof } from "ts-simple-nameof";
-import { IUser } from "../../../types";
+import { Gender, IUser } from "../../../types";
+import * as dayjs from "dayjs";
+import * as relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 @Component({
   selector: 'app-hello-infinite-row',
@@ -31,6 +35,14 @@ export class HelloInfiniteRowComponent implements OnInit {
     {
       headerName: 'Gender',
       field: nameof<IUser>(m => m.gender),
+    },
+    {
+      headerName: 'Last Logged In',
+      field: nameof<IUser>(m => m.lastLoggedIn),
+      cellRenderer: function (params: ICellRendererParams) {
+        const val = params.value as Date;
+        return dayjs(val).fromNow();
+      },
     },
   ];
   public defaultColDef: ColDef = {
@@ -65,7 +77,7 @@ export class HelloInfiniteRowComponent implements OnInit {
         const url = `http://localhost:3000/users?_start=${startRow}&_end=${endRow + 1}`;
         this.http.get<IUser[]>(url).subscribe((data) => {
           //see https://www.ag-grid.com/angular-data-grid/infinite-scrolling/#setting-last-row-index
-          const lastRow = (endRow+1-startRow === data.length)? undefined: startRow + data.length;
+          const lastRow = (endRow + 1 - startRow === data.length) ? undefined : startRow + data.length;
           data.pop();
           params.successCallback(data, lastRow);
         });

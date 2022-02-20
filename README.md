@@ -7,6 +7,12 @@ This project is to demonstrate the usage of libaries in angular, particularly ag
 1. run `npm run mock` to run mock servers give users at `localhost:3000/users`;
 2. run `npm start` to develop the angular app with ag-grid demo.
 
+# docs
+
+https://github.com/typicode/json-server
+
+https://www.ag-grid.com/angular-data-grid/infinite-scrolling
+
 # mock data via json-server with random jitter
 
 using [json-server](https://www.npmjs.com/package/json-server) with *Generate random data* capability. See `db.js` file.
