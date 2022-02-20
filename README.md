@@ -1,3 +1,7 @@
+# purpose
+
+This project is to demonstrate the usage of libaries in angular, particularly ag-grid, rx.js.
+
 # how to run?
 
 1. run `npm run mock` to run mock servers give users at `localhost:3000/users`;
@@ -18,3 +22,17 @@ json-server --watch db/index.js --delay 10 --middlewares db/jitter.js
 or run `npm run mock`
 
 This will give mocked ajax requests at least a delay of 10ms plus variable amount of delay between 0 ~ 2000ms.
+
+# pagination
+
+## case 1
+
+If you have 127 records, and page size is 20, then last page contains only 7 records.
+
+What [lastRow](https://www.ag-grid.com/angular-data-grid/infinite-scrolling/#setting-last-row-index) means is that:
+1. if we are not at last page, then set `lastRow` to `null` or `undefined`;
+2. if we are at last page, we only have 7 records, set `lastRow` to 7.
+
+## case 2
+
+If you have exactly 140 records, and page size is 20, then last page actually contains 20.
